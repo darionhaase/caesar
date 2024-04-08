@@ -85,15 +85,15 @@ jobs:
           qemu: i386
         - build: macos-apple-silicon
           os: macos-latest
-          rust: nightly
+          rust: stable
           target: aarch64-apple-darwin
         - build: macos-intel
           os: macos-13 # newest Github runner on Intel
-          rust: nightly
+          rust: stable
           target: x86_64-apple-darwin
         - build: win-msvc
           os: windows-latest
-          rust: nightly
+          rust: stable
           target: x86_64-pc-windows-msvc
 
     steps:
