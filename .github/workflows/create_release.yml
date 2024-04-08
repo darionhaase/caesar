@@ -83,8 +83,12 @@ jobs:
           target: i686-unknown-linux-gnu
           strip: x86_64-linux-gnu-strip
           qemu: i386
-        - build: macos
+        - build: macos-apple-silicon
           os: macos-latest
+          rust: nightly
+          target: aarch64-apple-darwin
+        - build: macos-intel
+          os: macos-13 # newest Github runner on Intel
           rust: nightly
           target: x86_64-apple-darwin
         - build: win-msvc
