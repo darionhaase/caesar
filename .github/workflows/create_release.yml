@@ -13,10 +13,10 @@ on:
         required: true
         type: bool
 jobs:
-  # The setup-release job runs purely to initialize the GitHub release itself,
+  # The create-release job runs purely to initialize the GitHub release itself,
   # and names the release after the provided Git ref (e.g. tag). It's separate
   # from building the release so that we only create the release once.
-  setup-release:
+  create-release:
     name: create-release
     runs-on: ubuntu-latest
     steps:
