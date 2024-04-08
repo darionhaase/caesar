@@ -22,6 +22,7 @@ jobs:
     outputs:
       tag: ${{ env.NIGHTLY_TAG }}
   create-release:
+    needs: prepare-release
     uses: ./.github/workflows/create_release.yml
     with:
       git_ref: ${{ needs.prepare-release.outputs.tag }}
