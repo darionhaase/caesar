@@ -10,6 +10,7 @@ env:
 
 jobs:
   prepare-release:
+    name: prepare-release
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -18,8 +19,10 @@ jobs:
       run: |
         git tag ${{ env.NIGHTLY_TAG }} -f
         git push origin ${{ env.NIGHTLY_TAG }} -f
+    outputs:
+      tag: ${{ env.NIGHTLY_TAG }}
   create-release:
     uses: ./.github/workflows/create_release.yml
     with:
-      git_ref: ${{ env.NIGHTLY_TAG }}
+      git_ref: ${{ needs.prepare-release.outputs.tag }}
       is_prerelease: true
