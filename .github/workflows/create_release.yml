@@ -6,6 +6,7 @@ name: Create Release
 
 on:
   workflow_call:
+    inputs:
       git_ref:
         required: true
         type: string
