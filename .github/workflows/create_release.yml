@@ -12,7 +12,7 @@ on:
         type: string
       is_prerelease:
         required: true
-        type: bool
+        type: boolean
 jobs:
   # The create-release job runs purely to initialize the GitHub release itself,
   # and names the release after the provided Git ref (e.g. tag). It's separate
