@@ -12,6 +12,8 @@ jobs:
   prepare-release:
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
     - name: Ensure tag exists
       run: |
         git tag $NIGHTLY_TAG -f
