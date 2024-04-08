@@ -16,10 +16,10 @@ jobs:
       uses: actions/checkout@v4
     - name: Ensure tag exists
       run: |
-        git tag $NIGHTLY_TAG -f
-        git push origin $NIGHTLY_TAG -f
+        git tag ${{ env.NIGHTLY_TAG }} -f
+        git push origin ${{ env.NIGHTLY_TAG }} -f
   create-release:
     uses: ./.github/workflows/create_release.yml
     with:
-      git_ref: $NIGHTLY_TAG
+      git_ref: ${{ env.NIGHTLY_TAG }}
       is_prerelease: true
