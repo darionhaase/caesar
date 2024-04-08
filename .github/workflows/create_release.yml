@@ -72,23 +72,24 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - build: linux
+        - build: linux-musl
           os: ubuntu-latest
           rust: nightly
           target: x86_64-unknown-linux-musl
-          strip: x86_64-linux-musl-strip
-        - build: stable-x86
+        - build: linux-x86
           os: ubuntu-latest
           rust: stable
-          target: i686-unknown-linux-gnu
-          strip: x86_64-linux-gnu-strip
-          qemu: i386
+          target: x86_64-unknown-linux-gnu
+        - build: linux-arm
+          os: ubuntu-latest
+          rust: stable
+          target: aarch64-unknown-linux-gnu
         - build: macos-apple-silicon
           os: macos-latest
           rust: stable
           target: aarch64-apple-darwin
         - build: macos-intel
-          os: macos-13 # newest Github runner on Intel
+          os: macos-13 # newest available Github runner on Intel
           rust: stable
           target: x86_64-apple-darwin
         - build: win-msvc
@@ -113,7 +114,7 @@ jobs:
       shell: bash
       run: |
         sudo apt-get update
-        sudo apt-get install cmake llvm libclang clang
+        sudo apt-get install cmake llvm libclang-dev clang
 
     - name: Install packages (MacOS)
       if: matrix.os == 'macos-latest'
@@ -126,7 +127,7 @@ jobs:
       if: matrix.os == 'windows-latest'
       shell: bash
       run: |
-        choco install cmake llvm
+        choco install -y cmake llvm
 
     - name: Set target variables
       shell: bash
