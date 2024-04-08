@@ -76,23 +76,28 @@ jobs:
           os: ubuntu-latest
           rust: nightly
           target: x86_64-unknown-linux-musl
+
         - build: linux-x86
           os: ubuntu-latest
           rust: stable
           target: x86_64-unknown-linux-gnu
+
         - build: linux-arm
           os: ubuntu-latest
           rust: stable
           target: aarch64-unknown-linux-gnu
+
         - build: macos-apple-silicon
           os: macos-latest
           rust: stable
           target: aarch64-apple-darwin
+
         - build: macos-intel
           os: macos-13 # newest available Github runner on Intel
           rust: stable
           target: x86_64-apple-darwin
-        - build: win-msvc
+
+        - build: windows-msvc
           os: windows-latest
           rust: stable
           target: x86_64-pc-windows-msvc
@@ -169,7 +174,7 @@ jobs:
       run: |
         mkdir -p "$ARCHIVE"/{complete,doc}
         cp "$BIN" "$ARCHIVE"/
-        cp {README.md} "$ARCHIVE"/
+        cp README.md "$ARCHIVE"/
       #  cp {CHANGELOG.md,FAQ.md,GUIDE.md} "$ARCHIVE"/doc/
       #  cp {README.md,COPYING,UNLICENSE,LICENSE-MIT} "$ARCHIVE"/
 
