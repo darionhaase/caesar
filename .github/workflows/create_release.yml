@@ -66,10 +66,6 @@ jobs:
       TARGET_FLAGS:
       # When CARGO is set to CROSS, TARGET_DIR includes matrix.target.
       TARGET_DIR: ./target
-      # Bump this as appropriate. We pin to a version to make sure CI
-      # continues to work as cross releases in the past have broken things
-      # in subtle ways.
-      CROSS_VERSION: v0.2.5
       # Emit backtraces on panics.
       RUST_BACKTRACE: 1
     strategy:
@@ -87,12 +83,6 @@ jobs:
           target: i686-unknown-linux-gnu
           strip: x86_64-linux-gnu-strip
           qemu: i386
-        - build: stable-aarch64
-          os: ubuntu-latest
-          rust: stable
-          target: aarch64-unknown-linux-gnu
-          strip: aarch64-linux-gnu-strip
-          qemu: qemu-aarch64
         - build: macos
           os: macos-latest
           rust: nightly
@@ -101,14 +91,6 @@ jobs:
           os: windows-latest
           rust: nightly
           target: x86_64-pc-windows-msvc
-        - build: win-gnu
-          os: windows-latest
-          rust: nightly-x86_64-gnu
-          target: x86_64-pc-windows-gnu
-        - build: win32-msvc
-          os: windows-latest
-          rust: nightly
-          target: i686-pc-windows-msvc
 
     steps:
     - name: Checkout repository
@@ -116,17 +98,31 @@ jobs:
       with:
           ref: ${{ inputs.git_ref }}
 
-    - name: Install packages (Ubuntu)
-      if: matrix.os == 'ubuntu-latest'
-      shell: bash
-      run: |
-        ci/ubuntu-install-packages
-
     - name: Install Rust
       uses: dtolnay/rust-toolchain@master
       with:
         toolchain: ${{ matrix.rust }}
         target: ${{ matrix.target }}
+
+    - name: Install packages (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install cmake llvm libclang clang
+
+    - name: Install packages (MacOS)
+      if: matrix.os == 'macos-latest'
+      shell: bash
+      run: |
+        brew update
+        brew install cmake
+
+    - name: Install packages (Windows)
+      if: matrix.os == 'windows-latest'
+      shell: bash
+      run: |
+        choco install cmake llvm
 
     - name: Set target variables
       shell: bash
@@ -156,16 +152,6 @@ jobs:
       if: matrix.os == 'macos-latest'
       shell: bash
       run: strip "$BIN"
-
-    - name: Strip release binary (cross)
-      if: env.CARGO == 'cross'
-      shell: bash
-      run: |
-        docker run --rm -v \
-          "$PWD/target:/target:Z" \
-          "ghcr.io/cross-rs/${{ matrix.target }}:main" \
-          "${{ matrix.strip }}" \
-          "/$BIN"
 
     - name: Determine archive name
       shell: bash
