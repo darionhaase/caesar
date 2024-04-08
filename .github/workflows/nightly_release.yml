@@ -1,0 +1,22 @@
+name: Nightly release (on change to main branch)
+on:
+  push:
+    branches:
+    - main
+
+env:
+  # Name of the tag to mark current nightly build
+  NIGHTLY_TAG: nightly
+
+jobs:
+  prepare-release:
+    steps:
+    - name: Ensure tag exists
+      run: |
+        git tag $NIGHTLY_TAG -f
+        git push origin $NIGHTLY_TAG -f
+  create-release:
+    uses: ./.github/workflows/create_release.yml
+    with:
+      git_ref: $NIGHTLY_TAG
+      is_prerelease: true
