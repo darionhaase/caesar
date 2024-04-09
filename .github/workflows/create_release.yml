@@ -37,8 +37,10 @@ jobs:
       - name: Check that tag version and Cargo.toml version are the same
         if: ${{ !inputs.is_prerelease }}
         shell: bash
+        # Remove leading v from semantic versioning tag v<major>.<minor>.<patch>
         run: |
-          if ! grep -q "version = \"$VERSION\"" Cargo.toml; then
+          echo "VERSION_WITHOUT_V=${VERSION#v}" >> $GITHUB_ENV
+          if ! grep -q "version = \"${VERSION#v}\"" Cargo.toml; then
             echo "version does not match Cargo.toml" >&2
             exit 1
           fi
@@ -53,7 +55,7 @@ jobs:
           generate_release_notes: ${{ inputs.is_prerelease }}
 
     outputs:
-      version: ${{ env.VERSION }}
+      version: ${{ env.VERSION_WITHOUT_V || env.VERSION }}
 
   build-release:
     name: build-release
