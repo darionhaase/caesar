@@ -72,20 +72,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - build: linux-musl
-          os: ubuntu-latest
-          rust: nightly
-          target: x86_64-unknown-linux-musl
-
+        
         - build: linux-x86
           os: ubuntu-latest
           rust: stable
           target: x86_64-unknown-linux-gnu
 
-        - build: linux-arm
+        - build: linux-x86-musl
           os: ubuntu-latest
           rust: stable
-          target: aarch64-unknown-linux-gnu
+          target: x86_64-unknown-linux-musl
 
         - build: macos-apple-silicon
           os: macos-latest
