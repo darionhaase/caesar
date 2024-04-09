@@ -39,6 +39,7 @@ jobs:
         shell: bash
         # Remove leading v from semantic versioning tag v<major>.<minor>.<patch>
         run: |
+          VERSION_WITHOUT_V=${VERSION#v}
           echo "VERSION_WITHOUT_V=${VERSION#v}" >> $GITHUB_ENV
           if ! grep -q "version = \"${VERSION_WITHOUT_V}\"" Cargo.toml; then
             echo "version ${VERSION_WITHOUT_V} does not match Cargo.toml" >&2
