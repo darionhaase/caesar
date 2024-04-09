@@ -128,12 +128,17 @@ jobs:
         brew update
         brew install cmake
 
-    - name: Install packages (Windows)
+    - name: Install LLVM and Clang # required for bindgen to work, see https://github.com/rust-lang/rust-bindgen/issues/1797
+      uses: KyleMayes/install-llvm-action@v1
       if: matrix.os == 'windows-latest'
-      shell: bash
-      run: |
-        choco install -y cmake llvm
-
+      with:
+        version: "11.0"
+        directory: ${{ runner.temp }}/llvm
+    
+    - name: Set LIBCLANG_PATH
+      run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
+      if: matrix.os == 'windows-latest'
+      
     - name: Set target variables
       shell: bash
       run: |
