@@ -42,12 +42,13 @@ jobs:
             echo "version does not match Cargo.toml" >&2
             exit 1
           fi
+      
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ env.VERSION }}
           tag_name: ${{ inputs.git_ref }}
-          draft: true
+          draft: ${{ !inputs.is_prerelease }}
           prerelease: ${{ inputs.is_prerelease }}
           generate_release_notes: ${{ inputs.is_prerelease }}
 
