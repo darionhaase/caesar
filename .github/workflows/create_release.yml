@@ -164,7 +164,7 @@ jobs:
     - name: Creating directory for archive
       shell: bash
       run: |
-        mkdir -p "$ARCHIVE"/{complete,doc}
+        mkdir -p "$ARCHIVE"
         cp "$BIN" "$ARCHIVE"/
         cp README.md "$ARCHIVE"/
       #  cp {CHANGELOG.md,FAQ.md,GUIDE.md} "$ARCHIVE"/doc/
