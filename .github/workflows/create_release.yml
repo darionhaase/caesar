@@ -191,5 +191,7 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         tag_name: ${{ inputs.git_ref }}
+        # Also need to specify 'draft' again, so that the action finds the correct existing (draft) release
+        draft: ${{ !inputs.is_prerelease }}
         files: |
           ${{ env.ASSET }}
