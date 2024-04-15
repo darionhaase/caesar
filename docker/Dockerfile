@@ -14,11 +14,8 @@ RUN printf "[net]\ngit-fetch-with-cli = true" >> "$CARGO_HOME/config.toml"
 RUN cargo build --verbose --release
 
 # ---- Building the final Docker image ----
-FROM debian:stable-slim
+FROM gcr.io/distroless/base-nossl-debian12:latest
 
-COPY --from=builder /root/caesar/target/release/caesar /root/caesar/caesar
-RUN ln -s /root/caesar/caesar /usr/local/bin/caesar
+COPY --from=builder /root/caesar/target/release/caesar /caesar
 
-# ---- Entry point setup ----
-WORKDIR /root/caesar
-ENTRYPOINT ["caesar"]
+ENTRYPOINT ["./caesar"]
